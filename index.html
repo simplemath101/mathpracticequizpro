@@ -658,53 +658,52 @@
             currentQuiz.selectedAnswer = parseInt(event.target.dataset.index);
         }
 
-        // Submit the answer
         function submitAnswer() {
-            if (currentQuiz.selectedAnswer === null) {
-                alert('Please select an answer.');
-                return;
-            }
-            
-            const currentQuestion = currentQuiz.questions[currentQuiz.currentQuestionIndex];
-            const isCorrect = currentQuiz.selectedAnswer === currentQuestion.correctAnswer;
-            
-            // Update options styling
-            const options = optionsContainer.querySelectorAll('.option');
-            options.forEach((option, index) => {
-                option.classList.remove('selected');
-                if (index === currentQuestion.correctAnswer) {
-                    option.classList.add('correct');
-                } else if (index === currentQuiz.selectedAnswer && !isCorrect) {
-                    option.classList.add('incorrect');
-                }
-                
-                // Disable options after submission
-                option.removeEventListener('click', selectOption);
-                option.style.cursor = 'default';
-            });
-            
-            // Show feedback
-            questionFeedback.textContent = isCorrect ? 
-                'Correct! Well done.' : 
-                'Incorrect. The correct answer is highlighted.';
-            questionFeedback.className = `question-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-            
-            // Update score if correct
-            if (isCorrect) {
-                currentQuiz.correctAnswers++;
-                correctCountElement.textContent = currentQuiz.correctAnswers;
-            }
-            
-            // Change buttons
-            submitButton.style.display = 'none';
-            
-            if (currentQuiz.currentQuestionIndex < currentQuiz.questions.length - 1) {
-                nextButton.style.display = 'block';
-            } else {
-                // This was the last question, show results
-                showResults();
-            }
+    if (currentQuiz.selectedAnswer === null) {
+        alert('Please select an answer.');
+        return;
+    }
+    
+    const currentQuestion = currentQuiz.questions[currentQuiz.currentQuestionIndex];
+    const isCorrect = currentQuiz.selectedAnswer === currentQuestion.answer;
+    
+    // Update options styling
+    const options = optionsContainer.querySelectorAll('.option');
+    options.forEach((option, index) => {
+        option.classList.remove('selected');
+        if (index === currentQuestion.answer) {
+            option.classList.add('correct');
+        } else if (index === currentQuiz.selectedAnswer && !isCorrect) {
+            option.classList.add('incorrect');
         }
+        
+        // Disable options after submission
+        option.removeEventListener('click', selectOption);
+        option.style.cursor = 'default';
+    });
+    
+    // Show feedback
+    questionFeedback.textContent = isCorrect ? 
+        'Correct! Well done.' : 
+        'Incorrect. The correct answer is highlighted.';
+    questionFeedback.className = `question-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+    
+    // Update score if correct
+    if (isCorrect) {
+        currentQuiz.correctAnswers++;
+        correctCountElement.textContent = currentQuiz.correctAnswers;
+    }
+    
+    // Change buttons
+    submitButton.style.display = 'none';
+    
+    if (currentQuiz.currentQuestionIndex < currentQuiz.questions.length - 1) {
+        nextButton.style.display = 'block';
+    } else {
+        // This was the last question, show results
+        showResults();
+    }
+}
 
         // Show the next question
         function showNextQuestion() {
