@@ -283,36 +283,251 @@
     <script>
         // Question bank - empty arrays for now, to be filled later
         const questionBanks = {
-            algebra: [],
-            geometry: [],
-            calculus: [],
-            probability: [],
-            statistics: [],
-            trigonometry: [],
-            numberTheory: [],
-            linearAlgebra: [],
-            discreteMath: []
-        };
-
-        // Temporary question banks for demonstration
-        // These will be replaced with actual questions later
-        function setupTemporaryQuestionBanks() {
-            // For each topic, create 20 placeholder questions
-            Object.keys(questionBanks).forEach(topic => {
-                for (let i = 1; i <= 20; i++) {
-                    questionBanks[topic].push({
-                        question: `Sample ${topic} question ${i}?`,
-                        options: [
-                            `Option A for ${topic} question ${i}`,
-                            `Option B for ${topic} question ${i}`,
-                            `Option C for ${topic} question ${i}`,
-                            `Option D for ${topic} question ${i}`
-                        ],
-                        correctAnswer: Math.floor(Math.random() * 4) // Random correct answer index
-                    });
-                }
-            });
+    algebra: [
+        {
+            question: "Which of the following is the solution to the equation 3x - 7 = 14?",
+            options: ["x = 5", "x = 7", "x = 9", "x = 11"],
+            answer: 1
+        },
+        {
+            question: "What is the factored form of x² - 9?",
+            options: ["(x - 3)(x + 3)", "(x - 9)(x + 1)", "(x - 4.5)²", "(x - 3)²"],
+            answer: 0
+        },
+        {
+            question: "Which function represents an exponential decay?",
+            options: ["f(x) = 3x + 2", "f(x) = 2^x", "f(x) = 0.5^x", "f(x) = x²"],
+            answer: 2
+        },
+        {
+            question: "If f(x) = 2x² - 3x + 4, what is f(2)?",
+            options: ["5", "8", "10", "12"],
+            answer: 1
+        },
+        {
+            question: "Which is the correct solution set for |x - 3| < 5?",
+            options: ["(-2, 8)", "[-2, 8]", "(-∞, -2) ∪ (8, ∞)", "[3, 8]"],
+            answer: 0
         }
+    ],
+    geometry: [
+        {
+            question: "What is the area of a circle with radius 6 units?",
+            options: ["12π square units", "36π square units", "6π square units", "9π square units"],
+            answer: 1
+        },
+        {
+            question: "In a right triangle, if one angle is 30°, what is the other acute angle?",
+            options: ["30°", "45°", "60°", "90°"],
+            answer: 2
+        },
+        {
+            question: "Which of the following is NOT a property of a rhombus?",
+            options: ["All sides are equal", "Diagonals bisect each other", "All angles are equal", "Diagonals bisect the angles"],
+            answer: 2
+        },
+        {
+            question: "What is the volume of a cube with side length 4 units?",
+            options: ["16 cubic units", "32 cubic units", "64 cubic units", "128 cubic units"],
+            answer: 2
+        },
+        {
+            question: "According to the Pythagorean theorem, in a right triangle with legs of length a and b and hypotenuse c, what is the relationship?",
+            options: ["a + b = c", "a² + b² = c²", "a × b = c", "a/b = c"],
+            answer: 1
+        }
+    ],
+    calculus: [
+        {
+            question: "What is the derivative of f(x) = 3x² + 2x - 5?",
+            options: ["f'(x) = 6x + 2", "f'(x) = 3x² + 2", "f'(x) = 6x² + 2x", "f'(x) = 6x - 5"],
+            answer: 0
+        },
+        {
+            question: "What is the indefinite integral of cos(x)?",
+            options: ["sin(x) + C", "-sin(x) + C", "tan(x) + C", "sec(x) + C"],
+            answer: 0
+        },
+        {
+            question: "What does the second derivative tell us about a function?",
+            options: ["The slope", "The rate of change of the slope", "The area under the curve", "The domain"],
+            answer: 1
+        },
+        {
+            question: "What is the limit of (sin(x))/x as x approaches 0?",
+            options: ["0", "1", "∞", "Does not exist"],
+            answer: 1
+        },
+        {
+            question: "Which of the following is the chain rule for differentiation?",
+            options: ["(f + g)' = f' + g'", "(f × g)' = f' × g + f × g'", "(f ∘ g)' = (f' ∘ g) × g'", "(f/g)' = (f'g - fg')/g²"],
+            answer: 2
+        }
+    ],
+    probability: [
+        {
+            question: "If P(A) = 0.3 and P(B) = 0.4 and A and B are independent events, what is P(A and B)?",
+            options: ["0.12", "0.7", "0.3", "0.1"],
+            answer: 0
+        },
+        {
+            question: "When rolling a fair six-sided die, what is the probability of rolling an even number?",
+            options: ["1/6", "1/3", "1/2", "2/3"],
+            answer: 2
+        },
+        {
+            question: "If you draw one card from a standard 52-card deck, what is the probability of drawing a face card (jack, queen, or king)?",
+            options: ["12/52", "13/52", "3/52", "1/4"],
+            answer: 0
+        },
+        {
+            question: "What is Bayes' theorem used for?",
+            options: ["Finding the probability of independent events", "Finding the probability of mutually exclusive events", "Finding conditional probability given new evidence", "Finding the probability of the complement of an event"],
+            answer: 2
+        },
+        {
+            question: "In a normal distribution, what percentage of data falls within one standard deviation of the mean?",
+            options: ["50%", "68%", "95%", "99.7%"],
+            answer: 1
+        }
+    ],
+    statistics: [
+        {
+            question: "What is the mean of the data set: 3, 7, 8, 5, 12?",
+            options: ["5", "7", "8", "9"],
+            answer: 1
+        },
+        {
+            question: "Which measure of central tendency is affected most by extreme values?",
+            options: ["Mean", "Median", "Mode", "Range"],
+            answer: 0
+        },
+        {
+            question: "What does a p-value of 0.05 indicate in hypothesis testing?",
+            options: ["The null hypothesis is true", "The null hypothesis is false", "There is a 5% chance the result occurred by random chance", "The sample size is 5% of the population"],
+            answer: 2
+        },
+        {
+            question: "What is the standard deviation of the data set: 2, 4, 6, 8, 10?",
+            options: ["2", "3", "4", "5"],
+            answer: 1
+        },
+        {
+            question: "Which correlation coefficient indicates the strongest negative relationship?",
+            options: ["-0.95", "-0.45", "0.45", "0.95"],
+            answer: 0
+        }
+    ],
+    trigonometry: [
+        {
+            question: "What is the value of sin(90°)?",
+            options: ["0", "1", "-1", "π/2"],
+            answer: 1
+        },
+        {
+            question: "Which trigonometric identity is correct?",
+            options: ["sin²θ + cos²θ = 2", "sin²θ - cos²θ = 1", "sin²θ + cos²θ = 1", "sin²θ × cos²θ = 1"],
+            answer: 2
+        },
+        {
+            question: "What is the period of the function f(x) = sin(2x)?",
+            options: ["π", "2π", "π/2", "4π"],
+            answer: 0
+        },
+        {
+            question: "What is the value of tan(45°)?",
+            options: ["0", "1", "√2", "√3"],
+            answer: 1
+        },
+        {
+            question: "Which angle has the same sine value as 30°?",
+            options: ["150°", "210°", "330°", "390°"],
+            answer: 0
+        }
+    ],
+    numberTheory: [
+        {
+            question: "Which of the following is a prime number?",
+            options: ["51", "57", "59", "91"],
+            answer: 2
+        },
+        {
+            question: "What is the greatest common divisor (GCD) of 48 and 36?",
+            options: ["6", "12", "18", "24"],
+            answer: 1
+        },
+        {
+            question: "Which of the following numbers is a perfect square?",
+            options: ["72", "81", "90", "110"],
+            answer: 1
+        },
+        {
+            question: "In modular arithmetic, what is 17 mod 5?",
+            options: ["0", "1", "2", "3"],
+            answer: 2
+        },
+        {
+            question: "What is the least common multiple (LCM) of 12 and 18?",
+            options: ["6", "36", "72", "216"],
+            answer: 1
+        }
+    ],
+    linearAlgebra: [
+        {
+            question: "What is the determinant of the matrix [[4, 3], [2, 1]]?",
+            options: ["-2", "2", "5", "10"],
+            answer: 0
+        },
+        {
+            question: "What does it mean when a matrix is singular?",
+            options: ["Its determinant is 1", "Its determinant is 0", "It has no inverse", "It is a square matrix"],
+            answer: 2
+        },
+        {
+            question: "The rank of a matrix is the dimension of:",
+            options: ["Its null space", "Its row space", "The matrix itself", "Its eigenspace"],
+            answer: 1
+        },
+        {
+            question: "If A is a 3×4 matrix and B is a 4×2 matrix, what is the size of the product AB?",
+            options: ["3×2", "4×3", "4×4", "3×3"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is true for an orthogonal matrix Q?",
+            options: ["Q^T = Q", "Q^T = -Q", "Q^T = Q^{-1}", "Q^T = I"],
+            answer: 2
+        }
+    ],
+    discreteMath: [
+        {
+            question: "How many different 4-digit numbers can be formed using the digits 1, 2, 3, 4, 5 without repetition?",
+            options: ["120", "24", "625", "1024"],
+            answer: 0
+        },
+        {
+            question: "Which of the following is a valid logical equivalence?",
+            options: ["p → q ≡ ¬p ∨ q", "p → q ≡ p ∨ q", "p → q ≡ ¬p ∧ q", "p → q ≡ p ∧ ¬q"],
+            answer: 0
+        },
+        {
+            question: "What is the minimum number of colors needed to color any planar graph according to the Four Color Theorem?",
+            options: ["2", "3", "4", "5"],
+            answer: 2
+        },
+        {
+            question: "In a complete graph with 5 vertices, how many edges are there?",
+            options: ["5", "10", "15", "20"],
+            answer: 1
+        },
+        {
+            question: "Which of the following represents a recurrence relation for the Fibonacci sequence?",
+            options: ["F_n = F_{n-1} + 1", "F_n = F_{n-1} × F_{n-2}", "F_n = F_{n-1} + F_{n-2}", "F_n = 2F_{n-1} - F_{n-2}"],
+            answer: 2
+        }
+    ]
+};
+
 
         // Quiz state
         let currentQuiz = {
