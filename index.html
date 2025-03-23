@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathematics Quiz</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #59a5d8;
+            --background-color: #f5f7fa;
+            --text-color: #333;
+            --correct-color: #4caf50;
+            --incorrect-color: #f44336;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .topic-selector {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        select {
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .start-button, .submit-button, .next-button, .try-again-button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin: 20px auto;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .start-button:hover, .submit-button:hover, .next-button:hover, .try-again-button:hover {
+            background-color: var(--accent-color);
+        }
+        
+        .quiz-container, .result-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: none;
+        }
+        
+        .quiz-container.active, .result-container.active {
+            display: block;
+        }
+        
+        .question {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .options {
+            list-style-type: none;
+        }
+        
+        .option {
+            padding: 10px 15px;
+            margin: 8px 0;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .option:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .option.selected {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .option.correct {
+            background-color: var(--correct-color);
+            color: white;
+        }
+        
+        .option.incorrect {
+            background-color: var(--incorrect-color);
+            color: white;
+        }
+        
+        .progress-tracker {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--accent-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .result-summary {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .result-summary h2 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .result-summary p {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .score {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+        
+        .question-feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .question-feedback.correct {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: var(--correct-color);
+            display: block;
+        }
+        
+        .question-feedback.incorrect {
+            background-color: rgba(244, 67, 54, 0.1);
+            color: var(--incorrect-color);
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .option {
+                padding: 12px;
+            }
+            
+            .start-button, .submit-button, .next-button, .try-again-button {
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mathematics Quiz</h1>
+            <p>Test your knowledge in various mathematics topics</p>
+        </header>
+        
+        <!-- Topic selector -->
+        <div class="topic-selector" id="topicSelector">
+            <h2>Select a Mathematics Topic</h2>
+            <select id="topicSelect">
+                <option value="" disabled selected>Choose a topic...</option>
+                <option value="algebra">Algebra</option>
+                <option value="geometry">Geometry</option>
+                <option value="calculus">Calculus</option>
+                <option value="probability">Probability</option>
+                <option value="statistics">Statistics</option>
+                <option value="trigonometry">Trigonometry</option>
+                <option value="numberTheory">Number Theory</option>
+                <option value="linearAlgebra">Linear Algebra</option>
+                <option value="discreteMath">Discrete Mathematics</option>
+            </select>
+            <button class="start-button" id="startQuiz">Start Quiz</button>
+        </div>
+        
+        <!-- Quiz container -->
+        <div class="quiz-container" id="quizContainer">
+            <div class="progress-tracker">
+                <p>Question <span id="currentQuestion">1</span> of <span id="totalQuestions">10</span></p>
+                <p>Correct: <span id="correctCount">0</span></p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            
+            <div class="question" id="questionContainer">
+                <h3 id="questionText">Question text will appear here</h3>
+                <ul class="options" id="optionsContainer">
+                    <!-- Options will be inserted here dynamically -->
+                </ul>
+                <div class="question-feedback" id="questionFeedback"></div>
+            </div>
+            
+            <button class="submit-button" id="submitAnswer">Submit Answer</button>
+            <button class="next-button" id="nextQuestion" style="display: none;">Next Question</button>
+        </div>
+        
+        <!-- Results container -->
+        <div class="result-container" id="resultContainer">
+            <div class="result-summary">
+                <h2>Quiz Complete!</h2>
+                <p>You scored:</p>
+                <div class="score"><span id="finalScore">0</span>/10</div>
+                <p id="performanceFeedback"></p>
+            </div>
+            <button class="try-again-button" id="tryAgain">Try Another Topic</button>
+        </div>
+    </div>
+
+    <script>
+        // Question bank - empty arrays for now, to be filled later
+        const questionBanks = {
+            algebra: [],
+            geometry: [],
+            calculus: [],
+            probability: [],
+            statistics: [],
+            trigonometry: [],
+            numberTheory: [],
+            linearAlgebra: [],
+            discreteMath: []
+        };
+
+        // Temporary question banks for demonstration
+        // These will be replaced with actual questions later
+        function setupTemporaryQuestionBanks() {
+            // For each topic, create 20 placeholder questions
+            Object.keys(questionBanks).forEach(topic => {
+                for (let i = 1; i <= 20; i++) {
+                    questionBanks[topic].push({
+                        question: `Sample ${topic} question ${i}?`,
+                        options: [
+                            `Option A for ${topic} question ${i}`,
+                            `Option B for ${topic} question ${i}`,
+                            `Option C for ${topic} question ${i}`,
+                            `Option D for ${topic} question ${i}`
+                        ],
+                        correctAnswer: Math.floor(Math.random() * 4) // Random correct answer index
+                    });
+                }
+            });
+        }
+
+        // Quiz state
+        let currentQuiz = {
+            topic: '',
+            questions: [],
+            currentQuestionIndex: 0,
+            correctAnswers: 0,
+            selectedAnswer: null
+        };
+
+        // DOM elements
+        const topicSelector = document.getElementById('topicSelector');
+        const topicSelect = document.getElementById('topicSelect');
+        const startButton = document.getElementById('startQuiz');
+        const quizContainer = document.getElementById('quizContainer');
+        const resultContainer = document.getElementById('resultContainer');
+        const questionContainer = document.getElementById('questionContainer');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const submitButton = document.getElementById('submitAnswer');
+        const nextButton = document.getElementById('nextQuestion');
+        const tryAgainButton = document.getElementById('tryAgain');
+        const currentQuestionElement = document.getElementById('currentQuestion');
+        const totalQuestionsElement = document.getElementById('totalQuestions');
+        const correctCountElement = document.getElementById('correctCount');
+        const progressFill = document.getElementById('progressFill');
+        const finalScoreElement = document.getElementById('finalScore');
+        const performanceFeedback = document.getElementById('performanceFeedback');
+        const questionFeedback = document.getElementById('questionFeedback');
+
+        // Set up event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            setupTemporaryQuestionBanks();
+            
+            startButton.addEventListener('click', startQuiz);
+            submitButton.addEventListener('click', submitAnswer);
+            nextButton.addEventListener('click', showNextQuestion);
+            tryAgainButton.addEventListener('click', resetQuiz);
+            
+            // Disable start button initially
+            startButton.disabled = true;
+            
+            // Enable start button when a topic is selected
+            topicSelect.addEventListener('change', function() {
+                startButton.disabled = false;
+            });
+        });
+
+        // Start the quiz
+        function startQuiz() {
+            currentQuiz.topic = topicSelect.value;
+            
+            if (!currentQuiz.topic) {
+                alert('Please select a topic.');
+                return;
+            }
+            
+            // Get 10 random questions from the selected topic
+            currentQuiz.questions = getRandomQuestions(currentQuiz.topic, 10);
+            currentQuiz.currentQuestionIndex = 0;
+            currentQuiz.correctAnswers = 0;
+            
+            // Hide topic selector and show quiz container
+            topicSelector.style.display = 'none';
+            quizContainer.classList.add('active');
+            
+            // Display the first question
+            displayQuestion();
+        }
+
+        // Get random questions from a topic
+        function getRandomQuestions(topic, count) {
+            const topicQuestions = [...questionBanks[topic]];
+            const randomQuestions = [];
+            
+            // Make sure we don't try to get more questions than are available
+            count = Math.min(count, topicQuestions.length);
+            
+            // Randomly select questions
+            for (let i = 0; i < count; i++) {
+                const randomIndex = Math.floor(Math.random() * topicQuestions.length);
+                randomQuestions.push(topicQuestions.splice(randomIndex, 1)[0]);
+            }
+            
+            return randomQuestions;
+        }
+
+        // Display the current question
+        function displayQuestion() {
+            const currentQuestion = currentQuiz.questions[currentQuiz.currentQuestionIndex];
+            
+            // Update question text
+            questionText.textContent = currentQuestion.question;
+            
+            // Clear previous options and add new ones
+            optionsContainer.innerHTML = '';
+            currentQuestion.options.forEach((option, index) => {
+                const li = document.createElement('li');
+                li.className = 'option';
+                li.textContent = option;
+                li.dataset.index = index;
+                li.addEventListener('click', selectOption);
+                optionsContainer.appendChild(li);
+            });
+            
+            // Update progress tracker
+            currentQuestionElement.textContent = currentQuiz.currentQuestionIndex + 1;
+            correctCountElement.textContent = currentQuiz.correctAnswers;
+            progressFill.style.width = `${((currentQuiz.currentQuestionIndex) / currentQuiz.questions.length) * 100}%`;
+            
+            // Reset buttons and selected answer
+            submitButton.style.display = 'block';
+            nextButton.style.display = 'none';
+            currentQuiz.selectedAnswer = null;
+            questionFeedback.className = 'question-feedback';
+            questionFeedback.textContent = '';
+        }
+
+        // Handle option selection
+        function selectOption(event) {
+            // Remove selected class from all options
+            const options = optionsContainer.querySelectorAll('.option');
+            options.forEach(option => option.classList.remove('selected'));
+            
+            // Add selected class to the clicked option
+            event.target.classList.add('selected');
+            
+            // Store the selected answer
+            currentQuiz.selectedAnswer = parseInt(event.target.dataset.index);
+        }
+
+        // Submit the answer
+        function submitAnswer() {
+            if (currentQuiz.selectedAnswer === null) {
+                alert('Please select an answer.');
+                return;
+            }
+            
+            const currentQuestion = currentQuiz.questions[currentQuiz.currentQuestionIndex];
+            const isCorrect = currentQuiz.selectedAnswer === currentQuestion.correctAnswer;
+            
+            // Update options styling
+            const options = optionsContainer.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                option.classList.remove('selected');
+                if (index === currentQuestion.correctAnswer) {
+                    option.classList.add('correct');
+                } else if (index === currentQuiz.selectedAnswer && !isCorrect) {
+                    option.classList.add('incorrect');
+                }
+                
+                // Disable options after submission
+                option.removeEventListener('click', selectOption);
+                option.style.cursor = 'default';
+            });
+            
+            // Show feedback
+            questionFeedback.textContent = isCorrect ? 
+                'Correct! Well done.' : 
+                'Incorrect. The correct answer is highlighted.';
+            questionFeedback.className = `question-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+            
+            // Update score if correct
+            if (isCorrect) {
+                currentQuiz.correctAnswers++;
+                correctCountElement.textContent = currentQuiz.correctAnswers;
+            }
+            
+            // Change buttons
+            submitButton.style.display = 'none';
+            
+            if (currentQuiz.currentQuestionIndex < currentQuiz.questions.length - 1) {
+                nextButton.style.display = 'block';
+            } else {
+                // This was the last question, show results
+                showResults();
+            }
+        }
+
+        // Show the next question
+        function showNextQuestion() {
+            currentQuiz.currentQuestionIndex++;
+            
+            if (currentQuiz.currentQuestionIndex < currentQuiz.questions.length) {
+                displayQuestion();
+            } else {
+                // This was the last question, show results
+                showResults();
+            }
+        }
+
+        // Show quiz results
+        function showResults() {
+            quizContainer.classList.remove('active');
+            resultContainer.classList.add('active');
+            
+            // Update score
+            finalScoreElement.textContent = currentQuiz.correctAnswers;
+            
+            // Set performance feedback based on score
+            const percentage = (currentQuiz.correctAnswers / currentQuiz.questions.length) * 100;
+            
+            if (percentage >= 90) {
+                performanceFeedback.textContent = 'Excellent! You have mastered this topic!';
+            } else if (percentage >= 70) {
+                performanceFeedback.textContent = 'Good job! You have a solid understanding of this topic.';
+            } else if (percentage >= 50) {
+                performanceFeedback.textContent = 'Nice effort! Keep practicing to improve your skills.';
+            } else {
+                performanceFeedback.textContent = 'Keep studying! With more practice, you\'ll improve.';
+            }
+            
+            // Update the progress bar to show completion
+            progressFill.style.width = '100%';
+        }
+
+        // Reset the quiz to try another topic
+        function resetQuiz() {
+            // Hide results and show topic selector
+            resultContainer.classList.remove('active');
+            topicSelector.style.display = 'block';
+            
+            // Reset the topic selector
+            topicSelect.value = '';
+            startButton.disabled = true;
+            
+            // Reset progress bar
+            progressFill.style.width = '0%';
+        }
+    </script>
+</body>
+</html>
